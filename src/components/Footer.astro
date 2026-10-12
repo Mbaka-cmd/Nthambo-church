@@ -1,0 +1,31 @@
+---
+import site from '../data/site.json';
+import { telHref, mailHref, socialLinks } from '../lib/format.js';
+
+const year = new Date().getFullYear();
+const social = socialLinks(site.social);
+const c = site.contact;
+---
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div>
+      <p class="footer-name">{site.name}</p>
+      {site.denomination && <p>{site.denomination}</p>}
+      {c.address && <p>{c.address}</p>}
+    </div>
+    <div>
+      {c.phone && <p><a href={telHref(c.phone)}>{c.phone}</a></p>}
+      {c.email && <p><a href={mailHref(c.email)}>{c.email}</a></p>}
+    </div>
+    {social.length > 0 && (
+      <ul>
+        {social.map((s) => (
+          <li><a href={s.href} target="_blank" rel="noopener noreferrer">{s.label}</a></li>
+        ))}
+      </ul>
+    )}
+  </div>
+  <div class="container">
+    <p class="copy">&copy; {year} {site.name}. All rights reserved.</p>
+  </div>
+</footer>

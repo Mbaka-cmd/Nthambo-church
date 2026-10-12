@@ -1,0 +1,22 @@
+---
+import site from '../data/site.json';
+import { telHref, waHref, mailHref, safeUrl } from '../lib/format.js';
+
+const c = site.contact;
+const phone = telHref(c.phone);
+const wa = waHref(c.whatsapp);
+const mail = mailHref(c.email);
+const map = safeUrl(c.mapUrl);
+const hasAny = Boolean(c.phone || c.whatsapp || c.email || c.address || map);
+---
+{hasAny ? (
+  <ul class="contact-list">
+    {c.phone && <li><strong>Phone:</strong> <a href={phone}>{c.phone}</a></li>}
+    {c.whatsapp && <li><strong>WhatsApp:</strong> <a href={wa} target="_blank" rel="noopener noreferrer">{c.whatsapp}</a></li>}
+    {c.email && <li><strong>Email:</strong> <a href={mail}>{c.email}</a></li>}
+    {c.address && <li><strong>Location:</strong> {c.address}</li>}
+    {map && <li><a class="btn" href={map} target="_blank" rel="noopener noreferrer">Get directions</a></li>}
+  </ul>
+) : (
+  <p class="notice">Contact details will be published soon.</p>
+)}

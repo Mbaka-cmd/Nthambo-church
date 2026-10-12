@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import data from '../data/gallery.json';
+
+const photos = data.items as any[];
+---
+<BaseLayout title="Gallery" description="Photos from church life.">
+  <PageHeader title="Gallery" />
+  <section class="section">
+    <div class="container">
+      {photos.length > 0 ? (
+        <ul class="gallery">
+          {photos.map((p) => (
+            <li>
+              <figure style="margin:0">
+                <img src={p.src} alt={p.alt ?? ''} loading="lazy" />
+                {p.caption && <figcaption>{p.caption}</figcaption>}
+              </figure>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="notice">Photos will be added soon.</p>
+      )}
+    </div>
+  </section>
+</BaseLayout>

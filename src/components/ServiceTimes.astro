@@ -1,0 +1,17 @@
+---
+import site from '../data/site.json';
+const services = site.services as any[];
+---
+{services.length > 0 ? (
+  <ul class="card-list">
+    {services.map((s) => (
+      <li class="card">
+        <h3>{s.name}</h3>
+        <p class="meta">{[s.day, s.time].filter(Boolean).join(' · ')}</p>
+        {s.notes && <p>{s.notes}</p>}
+      </li>
+    ))}
+  </ul>
+) : (
+  <p class="notice">Service times will be announced soon.</p>
+)}

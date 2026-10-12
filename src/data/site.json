@@ -2,8 +2,11 @@
   "name": "Nthambo Church",
   "denomination": null,
   "tagline": null,
+  "logo": null,
   "theme": { "title": null, "verse": null, "reference": null },
+  "about": { "intro": null, "history": null, "vision": null, "mission": null },
   "contact": { "phone": null, "whatsapp": null, "email": null, "address": null, "mapUrl": null },
   "social": { "facebook": null, "youtube": null, "instagram": null },
-  "services": []
+  "services": [],
+  "activities": []
 }

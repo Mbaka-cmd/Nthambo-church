@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import site from '../data/site.json';
+import leaders from '../data/leaders.json';
+import { paragraphs } from '../lib/format.js';
+
+const sections = [
+  { heading: 'Who we are', text: site.about.intro },
+  { heading: 'Our history', text: site.about.history },
+  { heading: 'Our vision', text: site.about.vision },
+  { heading: 'Our mission', text: site.about.mission }
+].filter((s) => s.text);
+const people = leaders.items as any[];
+---
+<BaseLayout title="About" description={`About ${site.name}`}>
+  <PageHeader title="About us" />
+  <section class="section">
+    <div class="container prose">
+      {sections.length > 0 ? (
+        sections.map((s) => (
+          <div>
+            <h2>{s.heading}</h2>
+            {paragraphs(s.text).map((p) => <p>{p}</p>)}
+          </div>
+        ))
+      ) : (
+        <p class="notice">Our story, vision and mission will be published soon.</p>
+      )}
+    </div>
+  </section>
+  <section class="section alt">
+    <div class="container">
+      <h2>Our leadership</h2>
+      {people.length > 0 ? (
+        <ul class="card-list">
+          {people.map((p) => (
+            <li class="card">
+              {p.photo && <img class="photo" src={p.photo} alt={p.name} loading="lazy" />}
+              <h3>{p.name}</h3>
+              {p.title && <p class="meta">{p.title}</p>}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="notice">Leadership details will be published soon.</p>
+      )}
+    </div>
+  </section>
+</BaseLayout>

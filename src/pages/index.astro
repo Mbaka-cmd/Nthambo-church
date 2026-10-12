@@ -1,15 +1,71 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ServiceTimes from '../components/ServiceTimes.astro';
+import ContactLinks from '../components/ContactLinks.astro';
 import site from '../data/site.json';
+import eventsData from '../data/events.json';
+import { upcoming, formatDate, paragraphs } from '../lib/format.js';
+
+const events = upcoming(eventsData.items as any[]).slice(0, 3);
+const introParas = paragraphs(site.about.intro);
+const t = site.theme;
 ---
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{site.name}</title>
-  </head>
-  <body>
-    <h1>{site.name}</h1>
-    <p>{site.tagline ?? "Welcome. Full details coming soon."}</p>
-    <p>Service times: {site.services.length ? site.services.length + " listed" : "to be confirmed"}</p>
-  </body>
-</html>
+<BaseLayout>
+  <section class="hero">
+    <div class="container">
+      {site.denomination && <p class="eyebrow">{site.denomination}</p>}
+      <h1>Welcome to {site.name}</h1>
+      <p class="lead">{site.tagline ?? 'Welcome. More information is being added to this website.'}</p>
+      {(t.title || t.verse) && (
+        <blockquote class="verse">
+          {t.title && <strong>{t.title}</strong>}
+          {t.verse && <p>{t.verse}</p>}
+          {t.reference && <cite>{t.reference}</cite>}
+        </blockquote>
+      )}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Service times</h2>
+      <ServiceTimes />
+      <p style="margin-top:1rem"><a href="/services/">All services and weekly activities</a></p>
+    </div>
+  </section>
+
+  {introParas.length > 0 && (
+    <section class="section alt">
+      <div class="container prose">
+        <h2>About us</h2>
+        {introParas.map((p) => <p>{p}</p>)}
+        <p><a href="/about/">Read more about us</a></p>
+      </div>
+    </section>
+  )}
+
+  {events.length > 0 && (
+    <section class="section">
+      <div class="container">
+        <h2>Upcoming events</h2>
+        <ul class="card-list">
+          {events.map((e) => (
+            <li class="card">
+              <h3>{e.title}</h3>
+              <p class="meta">{[formatDate(e.date), e.time].filter(Boolean).join(' · ')}</p>
+              {e.location && <p>{e.location}</p>}
+            </li>
+          ))}
+        </ul>
+        <p style="margin-top:1rem"><a href="/events/">All events</a></p>
+      </div>
+    </section>
+  )}
+
+  <section class="section alt">
+    <div class="container">
+      <h2>Get in touch</h2>
+      <ContactLinks />
+    </div>
+  </section>
+</BaseLayout>
