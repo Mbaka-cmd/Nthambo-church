@@ -1,0 +1,9 @@
+{
+  "name": "Nthambo Church",
+  "denomination": null,
+  "tagline": null,
+  "theme": { "title": null, "verse": null, "reference": null },
+  "contact": { "phone": null, "whatsapp": null, "email": null, "address": null, "mapUrl": null },
+  "social": { "facebook": null, "youtube": null, "instagram": null },
+  "services": []
+}
