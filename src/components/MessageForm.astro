@@ -1,0 +1,40 @@
+---
+import site from '../data/site.json';
+import { waHref } from '../lib/format.js';
+
+const { kind = 'contact' } = Astro.props;
+const wa = waHref(site.contact.whatsapp);
+const mail = site.contact.email;
+const isPrayer = kind === 'prayer';
+---
+{(wa || mail) && (
+  <form class="msg-form" data-kind={kind} data-wa={wa ?? ''} data-mail={mail ?? ''}>
+    <label>Your name <input name="name" required autocomplete="name" /></label>
+    <label>Phone (optional) <input name="phone" type="tel" autocomplete="tel" /></label>
+    <label>{isPrayer ? 'Prayer request' : 'Message'} <textarea name="message" rows="4" required></textarea></label>
+    <div class="link-row">
+      {wa && <button type="submit" class="btn" data-channel="wa">Send on WhatsApp</button>}
+      {mail && <button type="submit" class="btn btn-outline" data-channel="mail">Send by email</button>}
+    </div>
+    <p class="form-note">This opens WhatsApp or your email app with your message ready to send. Nothing is stored on this website.</p>
+  </form>
+)}
+<script>
+  document.addEventListener('submit', (e) => {
+    const form = (e.target as HTMLElement).closest?.('form.msg-form') as HTMLFormElement | null;
+    if (!form) return;
+    e.preventDefault();
+    const data = new FormData(form);
+    const name = String(data.get('name') || '').trim();
+    const phone = String(data.get('phone') || '').trim();
+    const message = String(data.get('message') || '').trim();
+    const kind = form.dataset.kind === 'prayer' ? 'Prayer request' : 'Message';
+    const text = `${kind} from ${name}${phone ? ` (${phone})` : ''}:\n${message}`;
+    const channel = (e as SubmitEvent).submitter?.getAttribute('data-channel');
+    if (channel === 'mail' && form.dataset.mail) {
+      window.location.href = `mailto:${form.dataset.mail}?subject=${encodeURIComponent(`${kind} from ${name}`)}&body=${encodeURIComponent(text)}`;
+    } else if (form.dataset.wa) {
+      window.open(`${form.dataset.wa}?text=${encodeURIComponent(text)}`, '_blank', 'noopener');
+    }
+  });
+</script>

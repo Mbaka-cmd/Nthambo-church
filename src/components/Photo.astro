@@ -1,0 +1,8 @@
+---
+import { imgSrc } from '../lib/format.js';
+const { src, alt = '', class: cls = '' } = Astro.props;
+const safe = imgSrc(src);
+---
+{safe
+  ? <img class={`photo ${cls}`} src={safe} alt={alt} loading="lazy" />
+  : <div class={`photo ph ${cls}`} aria-hidden="true"></div>}

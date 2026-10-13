@@ -67,3 +67,36 @@ export function socialLinks(social) {
     .map(([key, url]) => ({ label: labels[key] ?? key, href: safeUrl(url) }))
     .filter((s) => s.href);
 }
+
+export function slugify(text) {
+  return String(text ?? '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+}
+
+// Returns the 11-character YouTube video ID from common URL shapes, or null.
+export function youtubeId(url) {
+  const u = safeUrl(url);
+  if (!u) return null;
+  let parsed;
+  try { parsed = new URL(u); } catch { return null; }
+  const host = parsed.hostname.replace(/^www\./, '').replace(/^m\./, '');
+  let id = null;
+  if (host === 'youtu.be') {
+    id = parsed.pathname.slice(1).split('/')[0];
+  } else if (host === 'youtube.com' || host === 'youtube-nocookie.com') {
+    if (parsed.pathname === '/watch') {
+      id = parsed.searchParams.get('v');
+    } else {
+      const m = parsed.pathname.match(/^\/(embed|live|shorts)\/([^/?]+)/);
+      if (m) id = m[2];
+    }
+  }
+  return id && /^[A-Za-z0-9_-]{11}$/.test(id) ? id : null;
+}
+
+// Image paths: site-relative (/images/...) or https only. Use filenames without spaces.
+export function imgSrc(value) {
+  if (!value) return null;
+  const v = String(value).trim();
+  if (!(/^\/(?!\/)/.test(v) || /^https?:\/\//i.test(v))) return null;
+  return encodeURI(v).replace(/'/g, '%27').replace(/\(/g, '%28').replace(/\)/g, '%29');
+}

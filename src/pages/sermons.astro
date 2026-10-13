@@ -1,8 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
+import Photo from '../components/Photo.astro';
+import YouTubeEmbed from '../components/YouTubeEmbed.astro';
 import data from '../data/sermons.json';
-import { newestFirst, formatDate, safeUrl } from '../lib/format.js';
+import { newestFirst, formatDate, safeUrl, youtubeId } from '../lib/format.js';
 
 const sermons = newestFirst(data.items as any[]);
 ---
@@ -14,13 +16,11 @@ const sermons = newestFirst(data.items as any[]);
         <ul class="card-list">
           {sermons.map((s) => (
             <li class="card">
+              {youtubeId(s.youtubeUrl) ? <YouTubeEmbed url={s.youtubeUrl} title={s.title} /> : <Photo src={s.image} alt={s.title} />}
               <h3>{s.title}</h3>
               <p class="meta">{[s.speaker, formatDate(s.date)].filter(Boolean).join(' · ')}</p>
               {s.scripture && <p><strong>Scripture:</strong> {s.scripture}</p>}
-              <div class="link-row">
-                {safeUrl(s.videoUrl) && <a class="btn" href={safeUrl(s.videoUrl)} target="_blank" rel="noopener noreferrer">Watch</a>}
-                {safeUrl(s.audioUrl) && <a class="btn" href={safeUrl(s.audioUrl)} target="_blank" rel="noopener noreferrer">Listen</a>}
-              </div>
+              {safeUrl(s.audioUrl) && <a href={safeUrl(s.audioUrl)} target="_blank" rel="noopener noreferrer">Listen (audio)</a>}
             </li>
           ))}
         </ul>

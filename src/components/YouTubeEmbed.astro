@@ -1,0 +1,26 @@
+---
+import { youtubeId } from '../lib/format.js';
+const { url, title = 'Video' } = Astro.props;
+const id = youtubeId(url);
+---
+{id && (
+  <a class="yt" href={`https://www.youtube.com/watch?v=${id}`} data-yt={id} data-title={title} target="_blank" rel="noopener noreferrer">
+    <img src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`} alt="" loading="lazy" width="480" height="360" />
+    <span class="yt-play" aria-hidden="true">&#9654;</span>
+    <span class="visually-hidden">Play video: {title}</span>
+  </a>
+)}
+<script>
+  document.addEventListener('click', (e) => {
+    const a = (e.target as HTMLElement).closest?.('a.yt[data-yt]') as HTMLAnchorElement | null;
+    if (!a) return;
+    e.preventDefault();
+    const f = document.createElement('iframe');
+    f.src = `https://www.youtube-nocookie.com/embed/${a.dataset.yt}?autoplay=1&rel=0`;
+    f.title = a.dataset.title || 'Video';
+    f.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen';
+    f.allowFullscreen = true;
+    f.className = 'yt-frame';
+    a.replaceWith(f);
+  });
+</script>

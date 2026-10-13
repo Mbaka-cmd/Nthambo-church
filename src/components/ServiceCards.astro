@@ -1,11 +1,16 @@
 ---
 import site from '../data/site.json';
+import Photo from './Photo.astro';
+import { safeUrl } from '../lib/format.js';
+
 const services = site.services as any[];
+const live = safeUrl((site.live as any).url);
 ---
 {services.length > 0 ? (
   <ul class="card-list">
     {services.map((s) => (
       <li class="card">
+        <Photo src={s.image} alt={s.name} />
         <h3>{s.name}</h3>
         <p class="meta">{[s.day, s.time].filter(Boolean).join(' · ')}</p>
         {s.notes && <p>{s.notes}</p>}
@@ -14,4 +19,9 @@ const services = site.services as any[];
   </ul>
 ) : (
   <p class="notice">Service times will be announced soon.</p>
+)}
+{live && (
+  <div class="link-row center">
+    <a class="btn btn-gold" href={live} target="_blank" rel="noopener noreferrer">Watch live on YouTube</a>
+  </div>
 )}

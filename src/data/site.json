@@ -3,10 +3,13 @@
   "denomination": null,
   "tagline": null,
   "logo": null,
-  "theme": { "title": null, "verse": null, "reference": null },
-  "about": { "intro": null, "history": null, "vision": null, "mission": null },
-  "contact": { "phone": null, "whatsapp": null, "email": null, "address": null, "mapUrl": null },
+  "hero": { "image": null },
+  "theme": { "year": null, "title": null, "verse": null, "reference": null, "poster": null, "gallery": [] },
+  "about": { "intro": null, "history": null, "vision": null, "mission": null, "images": [] },
+  "contact": { "phone": null, "whatsapp": null, "email": null, "address": null, "mapUrl": null, "image": null },
   "social": { "facebook": null, "youtube": null, "instagram": null },
+  "live": { "url": null },
+  "give": { "label": "Give", "url": null, "message": null, "instructions": null },
   "services": [],
   "activities": []
 }
