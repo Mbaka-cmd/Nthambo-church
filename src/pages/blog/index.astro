@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import Photo from '../../components/Photo.astro';
+import data from '../../data/blog.json';
+import { newestFirst, formatDate } from '../../lib/format.js';
+
+const posts = newestFirst((data.items as any[]).filter((p) => p.slug));
+---
+<BaseLayout title="Blog" description="Teachings, scriptures and news from our church.">
+  <PageHeader title="Blog" />
+  <section class="section">
+    <div class="container">
+      {posts.length > 0 ? (
+        <ul class="card-list">
+          {posts.map((p) => (
+            <li class="card">
+              {p.image && <Photo src={p.image} alt={p.title} />}
+              <p class="meta">{[formatDate(p.date), p.category].filter(Boolean).join(' · ')}</p>
+              <h3>{p.title}</h3>
+              {p.scripture && <p><strong>{p.scripture}</strong></p>}
+              {p.summary && <p>{p.summary}</p>}
+              <a href={'/blog/' + p.slug + '/'}>Read more</a>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="notice">Posts will be added soon.</p>
+      )}
+    </div>
+  </section>
+</BaseLayout>

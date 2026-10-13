@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import Photo from '../../components/Photo.astro';
+import YouTubeEmbed from '../../components/YouTubeEmbed.astro';
+import data from '../../data/blog.json';
+import { formatDate, safeUrl, youtubeId } from '../../lib/format.js';
+
+export function getStaticPaths() {
+  return (data.items as any[]).filter((p) => p.slug).map((post) => ({ params: { slug: post.slug }, props: { post } }));
+}
+
+const { post } = Astro.props as { post: any };
+const esc = (t: string) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+// [link text](https://...) in a paragraph becomes a clickable link; only http(s) links are allowed
+const rich = (t: string) => esc(String(t)).replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+const links = ((post.links ?? []) as any[]).filter((l) => safeUrl(l.url));
+const video = post.youtubeUrl && youtubeId(post.youtubeUrl) ? post.youtubeUrl : null;
+---
+<BaseLayout title={post.title} description={post.summary ?? post.title}>
+  <PageHeader title={post.title} />
+  <section class="section">
+    <div class="container prose">
+      <p class="meta">{[formatDate(post.date), post.category, post.author].filter(Boolean).join(' · ')}</p>
+      {post.image && <Photo src={post.image} alt={post.title} />}
+      {post.scripture && (
+        <blockquote>
+          <strong>{post.scripture}</strong>
+          {post.scriptureText && <p>{post.scriptureText}</p>}
+        </blockquote>
+      )}
+      {((post.body ?? []) as string[]).map((p) => <p set:html={rich(p)} />)}
+      {video && <YouTubeEmbed url={video} title={post.title} />}
+      {links.length > 0 && (
+        <div>
+          <h2>Read and learn more</h2>
+          <ul>
+            {links.map((l) => <li><a href={safeUrl(l.url)} target="_blank" rel="noopener noreferrer">{l.label ?? l.url}</a></li>)}
+          </ul>
+        </div>
+      )}
+      <p><a class="btn" href="/blog/">Back to all posts</a></p>
+    </div>
+  </section>
+</BaseLayout>

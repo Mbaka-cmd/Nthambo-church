@@ -1,0 +1,70 @@
+---
+import site from '../data/site.json';
+import ministries from '../data/ministries.json';
+import { slugify, safeUrl, socialLinks, imgSrc } from '../lib/format.js';
+
+const path = Astro.url.pathname;
+const is = (prefix: string) => path.startsWith(prefix);
+const ministryItems = (ministries.items as any[]).filter((m) => m.name);
+const giveUrl = safeUrl((site.give as any).url);
+const social = socialLinks(site.social);
+const logo = imgSrc(site.logo);
+const address = site.contact.address;
+
+const nav = [
+  { href: '/', label: 'Home', current: path === '/', sub: [] as any[] },
+  { href: '/about/', label: 'About', current: is('/about/'), sub: [] as any[] },
+  { href: '/ministries/', label: 'Ministries', current: is('/ministries/'),
+    sub: ministryItems.map((m) => ({ href: `/ministries/#${slugify(m.name)}`, label: m.name })) },
+  { href: '/services/', label: 'Services', current: is('/services/'), sub: [] as any[] },
+  { href: '/events/', label: 'Events', current: is('/events/'), sub: [] as any[] },
+  { href: '/sermons/', label: 'Media', current: is('/sermons/') || is('/gallery/'),
+    sub: [{ href: '/sermons/', label: 'Sermons' }, { href: '/gallery/', label: 'Gallery' }] },
+  { href: '/contact/', label: 'Contact', current: is('/contact/'), sub: [] as any[] }
+];
+---
+{(address || social.length > 0) && (
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <span>{address ?? ''}</span>
+      <ul>
+        {social.map((s) => <li><a href={s.href} target="_blank" rel="noopener noreferrer">{s.label}</a></li>)}
+      </ul>
+    </div>
+  </div>
+)}
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="/">
+      {logo ? <img class="brand-logo" src={logo} alt="" height="48" /> : null}
+      <span>{site.name}</span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <nav id="site-nav" class="site-nav" aria-label="Main">
+      <ul>
+        {nav.map((n) => (
+          <li class={n.sub.length > 0 ? 'has-sub' : undefined}>
+            <a href={n.href} aria-current={n.current ? 'page' : undefined}>{n.label}</a>
+            {n.sub.length > 0 && (
+              <ul class="sub">
+                {n.sub.map((s) => <li><a href={s.href}>{s.label}</a></li>)}
+              </ul>
+            )}
+          </li>
+        ))}
+        {giveUrl && (
+          <li class="nav-give"><a class="btn btn-give" href={giveUrl} target="_blank" rel="noopener noreferrer">{(site.give as any).label ?? 'Give'}</a></li>
+        )}
+      </ul>
+    </nav>
+  </div>
+</header>
+<script>
+  const btn = document.querySelector('.nav-toggle');
+  const nav = document.getElementById('site-nav');
+  btn?.addEventListener('click', () => {
+    const open = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!open));
+    nav?.classList.toggle('is-open', !open);
+  });
+</script>
