@@ -15,7 +15,7 @@ const videos = (data.items as any[]).filter((v) => safeUrl(v.url));
         <ul class="card-list">
           {videos.map((v) => (
             <li class="card">
-              <FacebookReel url={safeUrl(v.url)} title={v.title} />
+              <FacebookReel url={safeUrl(v.url)} title={v.title} thumb={v.thumb} />
               <h3>{v.title}</h3>
               <p><a class="btn" href={safeUrl(v.url)} target="_blank" rel="noopener noreferrer">Watch on Facebook</a></p>
             </li>

@@ -1,10 +1,57 @@
 ---
-interface Props { url: string; title: string }
-const { url, title } = Astro.props;
+interface Props { url: string; title: string; thumb?: string | null }
+const { url, title, thumb } = Astro.props;
 const W = 220;
 const H = 391;
 const src = 'https://www.facebook.com/plugins/video.php?href=' + encodeURIComponent(url) + '&show_text=false&width=' + W + '&height=' + H;
 ---
-<div class="fb-reel" style="display:flex;justify-content:center;max-width:100%;margin-bottom:.75rem">
-  <iframe src={src} title={title} width={W} height={H} style="border:none;overflow:hidden;max-width:100%;border-radius:10px" scrolling="no" frameborder="0" allowfullscreen="true" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+<div class="fb-reel" data-src={src} data-title={title} data-w={W} data-h={H} data-tap={thumb ? 'yes' : 'no'}>
+  {thumb ? (
+    <button type="button" class="fb-reel-poster" aria-label={'Play video: ' + title}>
+      <img src={thumb} alt="" loading="lazy" decoding="async" width={W} height={H} />
+      <span class="fb-reel-play" aria-hidden="true"></span>
+    </button>
+  ) : (
+    <div class="fb-reel-wait">Loading video...</div>
+  )}
 </div>
+
+<style is:global>
+  .fb-reel { display: flex; justify-content: center; max-width: 100%; margin-bottom: .75rem; }
+  .fb-reel-wait { width: 220px; max-width: 100%; height: 391px; display: flex; align-items: center; justify-content: center; background: #e9eef7; border-radius: 10px; color: #14306a; font-size: .85rem; }
+  .fb-reel-poster { position: relative; width: 220px; max-width: 100%; height: 391px; padding: 0; border: 0; border-radius: 10px; overflow: hidden; cursor: pointer; background: #14306a; }
+  .fb-reel-poster img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .fb-reel-play { position: absolute; inset: 0; margin: auto; width: 64px; height: 64px; border-radius: 50%; background: rgba(0,0,0,.55); }
+  .fb-reel-play::before { content: ""; position: absolute; left: 26px; top: 19px; border-left: 22px solid #fff; border-top: 13px solid transparent; border-bottom: 13px solid transparent; }
+</style>
+
+<script>
+  function loadReel(box: HTMLElement) {
+    if (box.dataset.loaded) return;
+    box.dataset.loaded = '1';
+    const f = document.createElement('iframe');
+    f.src = box.dataset.src || '';
+    f.title = box.dataset.title || 'Video';
+    f.width = box.dataset.w || '220';
+    f.height = box.dataset.h || '391';
+    f.setAttribute('allowfullscreen', 'true');
+    f.setAttribute('scrolling', 'no');
+    f.setAttribute('frameborder', '0');
+    f.setAttribute('allow', 'autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share');
+    f.style.cssText = 'border:none;overflow:hidden;max-width:100%;border-radius:10px';
+    box.replaceChildren(f);
+  }
+  const boxes = Array.from(document.querySelectorAll('.fb-reel')) as HTMLElement[];
+  const io = 'IntersectionObserver' in window
+    ? new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) { io!.unobserve(e.target); loadReel(e.target as HTMLElement); }
+        });
+      }, { rootMargin: '300px' })
+    : null;
+  boxes.forEach((box) => {
+    if (box.dataset.tap === 'yes') {
+      box.querySelector('button')?.addEventListener('click', () => loadReel(box));
+    } else if (io) { io.observe(box); } else { loadReel(box); }
+  });
+</script>
