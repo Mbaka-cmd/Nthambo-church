@@ -3,6 +3,7 @@ import site from '../data/site.json';
 import ministries from '../data/ministries.json';
 import { safeUrl } from '../lib/format.js';
 import LeaderHighlight from './LeaderHighlight.astro';
+import WhatsAppIcon from './WhatsAppIcon.astro';
 
 const s: any = site;
 const slug = (t: string) => t.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
@@ -76,6 +77,7 @@ const give = safeUrl(s.give?.url);
     </div>
   </div>
 </header>
+<WhatsAppIcon />
 <LeaderHighlight />
 
 <style is:global>

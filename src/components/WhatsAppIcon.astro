@@ -1,0 +1,66 @@
+<style is:global>
+  .wa-icon { display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 50%; background: #25d366; color: #fff !important; flex: 0 0 auto; margin-left: .6rem; box-shadow: 0 2px 8px rgba(0,0,0,.2); transition: transform .15s ease; text-decoration: none; }
+  .wa-icon:hover { transform: scale(1.08); }
+  .wa-icon svg { width: 20px; height: 20px; display: block; }
+  li.wa-li { display: flex; align-items: center; list-style: none; }
+</style>
+<script>
+  const URL_WA = 'https://wa.me/254728093770';
+  const header = document.querySelector('header');
+
+  // Remove any floating chat button (fixed-position element only)
+  function removeFloating() {
+    const found = Array.from(document.querySelectorAll('a, button')).filter((el) => {
+      if (el.classList.contains('wa-icon')) return false;
+      const t = (el.textContent || '').trim();
+      const href = el.getAttribute('href') || '';
+      return /chat with us/i.test(t) || /wa\.me|whatsapp/i.test(href);
+    });
+    found.forEach((el) => {
+      let n = el;
+      while (n && n !== document.body) {
+        if (getComputedStyle(n).position === 'fixed') { n.remove(); return; }
+        n = n.parentElement;
+      }
+    });
+  }
+  removeFloating();
+  const obs = new MutationObserver(removeFloating);
+  obs.observe(document.body, { childList: true, subtree: true });
+  setTimeout(() => obs.disconnect(), 8000);
+
+  if (header) {
+    const icon = document.createElement('a');
+    icon.className = 'wa-icon';
+    icon.href = URL_WA;
+    icon.target = '_blank';
+    icon.rel = 'noopener noreferrer';
+    icon.setAttribute('aria-label', 'Chat with us on WhatsApp');
+    icon.title = 'Chat with us on WhatsApp';
+    icon.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.01 2 10.96c0 2.4 1.06 4.58 2.78 6.2L4 22l4.6-1.9c1.04.3 2.15.46 3.4.46 5.52 0 10-4.01 10-8.96S17.52 2 12 2zm-3 9.5a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5zm3 0a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5zm3 0a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5z"/></svg>';
+
+    const place = () => {
+      const links = Array.from(header.querySelectorAll('nav a'));
+      const contact = links.find((a) => /^contact$/i.test((a.textContent || '').trim()));
+      const burger = header.querySelector('button[aria-label*="menu" i], button[aria-controls], button[class*="burger" i], button[class*="toggle" i], button[class*="menu" i]');
+      if (contact && contact.offsetParent !== null) {
+        const li = contact.closest('li');
+        if (li && li.parentElement) {
+          let wrap = header.querySelector('li.wa-li');
+          if (!wrap) { wrap = document.createElement('li'); wrap.className = 'wa-li'; }
+          wrap.appendChild(icon);
+          if (wrap.previousElementSibling !== li) li.after(wrap);
+        } else if (icon.previousElementSibling !== contact) {
+          contact.after(icon);
+        }
+      } else if (burger) {
+        const wrap = header.querySelector('li.wa-li'); if (wrap) wrap.remove();
+        burger.before(icon);
+      } else if (!icon.isConnected) {
+        (header.querySelector('nav') || header).appendChild(icon);
+      }
+    };
+    place();
+    window.addEventListener('resize', place);
+  }
+</script>
