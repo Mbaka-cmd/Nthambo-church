@@ -1,4 +1,5 @@
 ---
+import DevCredit from './DevCredit.astro';
 import site from '../data/site.json';
 import { telHref, mailHref, socialLinks } from '../lib/format.js';
 
@@ -28,4 +29,5 @@ const c = site.contact;
   <div class="container">
     <p class="copy">&copy; {year} {site.name}. All rights reserved.</p>
   </div>
+<DevCredit />
 </footer>

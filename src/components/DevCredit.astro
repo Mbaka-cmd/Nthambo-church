@@ -1,0 +1,14 @@
+---
+const base = import.meta.env.BASE_URL.replace(/\/+$/, '');
+const isHome = Astro.url.pathname.replace(/\/+$/, '') === base;
+---
+{isHome && (
+  <p class="dev-credit">
+    <a href="https://adalyntechnologies.co.ke/" target="_blank" rel="noopener noreferrer">Developed By Adalyn Technologies</a>
+  </p>
+)}
+<style>
+  .dev-credit { grid-column: 1 / -1; width: 100%; margin: 1rem 0 0; padding: 0 1rem .75rem; text-align: right; font-size: .8rem; }
+  .dev-credit a { color: inherit; opacity: .8; text-decoration: none; }
+  .dev-credit a:hover { opacity: 1; text-decoration: underline; }
+</style>
