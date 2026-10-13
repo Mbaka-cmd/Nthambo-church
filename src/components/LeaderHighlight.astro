@@ -1,17 +1,48 @@
 <script>
   const reCurrent = /\bPresent\)?$/i;
+  const reJustin = /Justin M\.? Njagi/i;
+  const prefix = location.pathname.startsWith('/Nthambo-church/') ? '/Nthambo-church/' : '/';
+  const photoUrl = prefix + 'images/leaders/rev-justin-njagi.jpg';
+
   const cands = Array.from(document.querySelectorAll('main .card, main article, main li'));
   const inner = cands.filter((c) => !cands.some((o) => o !== c && c.contains(o)));
+
+  function addPhoto(card) {
+    if (card.dataset.leaderPhoto || card.querySelector('img')) return;
+    card.dataset.leaderPhoto = '1';
+    const tpl = inner.find((o) => o !== card && o.parentElement === card.parentElement && o.querySelector('img'))
+             || inner.find((o) => o !== card && o.querySelector('img'));
+    let node;
+    if (tpl) {
+      const tImg = tpl.querySelector('img');
+      const wrapper = tImg.parentElement === tpl ? tImg : tImg.parentElement;
+      node = wrapper.cloneNode(true);
+    } else {
+      node = document.createElement('img');
+      node.style.cssText = 'display:block;width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:10px;margin-bottom:.75rem;';
+    }
+    const img = node.tagName === 'IMG' ? node : node.querySelector('img');
+    img.removeAttribute('srcset');
+    img.removeAttribute('sizes');
+    img.src = photoUrl;
+    img.alt = 'Rev. Justin M. Njagi';
+    img.loading = 'eager';
+    card.prepend(node);
+  }
+
   inner.forEach((card) => {
-    if (card.classList.contains('leader-current')) return;
-    const leaf = Array.from(card.querySelectorAll('p, span, small, div')).find(
-      (el) => el.children.length === 0 && reCurrent.test((el.textContent || '').trim())
-    );
-    if (!leaf) return;
-    card.classList.add('leader-current');
-    const badge = document.createElement('span');
-    badge.className = 'leader-badge';
-    badge.textContent = 'Current minister';
-    card.prepend(badge);
+    if (!card.classList.contains('leader-current')) {
+      const leaf = Array.from(card.querySelectorAll('p, span, small, div')).find(
+        (el) => el.children.length === 0 && reCurrent.test((el.textContent || '').trim())
+      );
+      if (leaf) {
+        card.classList.add('leader-current');
+        const badge = document.createElement('span');
+        badge.className = 'leader-badge';
+        badge.textContent = 'Current minister';
+        card.prepend(badge);
+      }
+    }
+    if (reJustin.test(card.textContent || '')) addPhoto(card);
   });
 </script>
