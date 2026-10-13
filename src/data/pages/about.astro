@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Photo from '../components/Photo.astro';
+import site from '../data/site.json';
+import leaders from '../data/leaders.json';
+import { paragraphs } from '../lib/format.js';
+
+const about = site.about as any;
+const sections = [
+  { heading: 'Who we are', text: about.intro },
+  { heading: 'Our history', text: about.history },
+  { heading: 'Our vision', text: about.vision },
+  { heading: 'Our mission', text: about.mission }
+].filter((s) => s.text);
+const images = about.images as any[];
+const people = leaders.items as any[];
+---
+<BaseLayout title="About" description={`About ${site.name}`}>
+  <PageHeader title="About us" />
+  <section class="section">
+    <div class="container two-col">
+      <div class="prose">
+        {sections.length > 0 ? (
+          sections.map((s) => (
+            <div>
+              <h2>{s.heading}</h2>
+              {paragraphs(s.text).map((p) => <p>{p}</p>)}
+            </div>
+          ))
+        ) : (
+          <p class="notice">Our story, vision and mission will be published soon.</p>
+        )}
+      </div>
+      {images.length > 0 && (
+        <div class="about-photos">
+          {images.slice(0, 2).map((img) => <Photo src={img.src} alt={img.alt ?? ''} />)}
+        </div>
+      )}
+    </div>
+  </section>
+  <section class="section soft">
+    <div class="container">
+      <div class="section-head"><h2>Our leadership</h2></div>
+      {people.length > 0 ? (
+        <ul class="card-list">
+          {people.map((p) => (
+            <li class="card leader">
+              <Photo src={p.image} alt={p.name} />
+              <h3>{p.name}</h3>
+              {p.title && <p class="meta">{p.title}</p>}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="notice">Leadership details will be published soon.</p>
+      )}
+    </div>
+  </section>
+</BaseLayout>

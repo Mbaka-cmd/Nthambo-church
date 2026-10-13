@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import ContactLinks from '../components/ContactLinks.astro';
+import MapEmbed from '../components/MapEmbed.astro';
 import MessageForm from '../components/MessageForm.astro';
 import site from '../data/site.json';
 import { socialLinks, waHref } from '../lib/format.js';
@@ -16,6 +17,7 @@ const canMessage = Boolean(waHref(site.contact.whatsapp) || site.contact.email);
       <div>
         <h2>Find us</h2>
         <ContactLinks />
+        <MapEmbed />
         {social.length > 0 && (
           <div>
             <h2 style="margin-top:2rem">Follow us</h2>

@@ -109,24 +109,7 @@ const canMessage = Boolean(waHref(site.contact.whatsapp) || site.contact.email);
     </section>
   )}
 
-  {ministryItems.length > 0 && (
-    <section class="section soft">
-      <div class="container">
-        <div class="section-head"><span class="kicker">{site.name}</span><h2>Ministries</h2></div>
-        <ul class="card-list">
-          {ministryItems.map((m) => (
-            <li class="card">
-              <Photo src={m.image} alt={m.name} />
-              <h3>{m.name}</h3>
-              {m.description && <p>{m.description}</p>}
-              <a href={`/ministries/#${slugify(m.name)}`}>Read more</a>
-            </li>
-          ))}
-        </ul>
-        <div class="link-row center"><a class="btn btn-outline" href="/ministries/">All ministries</a></div>
-      </div>
-    </section>
-  )}
+  
 
   {leaderItems.length > 0 && (
     <section class="section band-blue">
@@ -182,19 +165,6 @@ const canMessage = Boolean(waHref(site.contact.whatsapp) || site.contact.email);
     </section>
   )}
 
-  <section class="section">
-    <div class="container two-col">
-      <div>
-        <div class="section-head" style="text-align:left"><span class="kicker">Contact us</span><h2>Get in touch</h2></div>
-        <MessageForm kind="contact" />
-        {!canMessage && <ContactLinks />}
-      </div>
-      <div>
-        <Photo src={site.contact.image} alt="" />
-        {canMessage && <div style="margin-top:1.25rem"><ContactLinks /></div>}
-      </div>
-    </div>
-  </section>
 
   {canMessage && (
     <section class="section band-coral">

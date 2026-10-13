@@ -1,15 +1,65 @@
 {
-  "name": "PCEA Nthambo Church",
-  "denomination": "Presbyterian Church of East Africa (PCEA)",
-  "tagline": null,
-  "logo": "/images/logo.png",
-  "hero": { "image": null },
-  "theme": { "year": null, "title": null, "verse": null, "reference": null, "poster": null, "gallery": [] },
-  "about": { "intro": null, "history": null, "vision": null, "mission": null, "images": [] },
-  "contact": { "phone": null, "whatsapp": null, "email": null, "address": "Nthambo, Magumoni, Tharaka-Nithi County, Kenya", "mapUrl": null, "image": null },
-  "social": { "facebook": "https://www.facebook.com/nthamboPCEAchurch/", "youtube": null, "instagram": null },
-  "live": { "url": null },
-  "give": { "label": "Give", "url": null, "message": null, "instructions": null },
-  "services": [],
-  "activities": []
+    "name":  "PCEA Nthambo Church",
+    "denomination":  "Presbyterian Church of East Africa (PCEA)",
+    "tagline":  null,
+    "logo":  "/images/logo.png",
+    "hero":  {
+                 "image":  "/images/hero/youths.jpg"
+             },
+    "theme":  {
+                  "year":  null,
+                  "title":  null,
+                  "verse":  null,
+                  "reference":  null,
+                  "poster":  null,
+                  "gallery":  [
+
+                              ]
+              },
+    "about":  {
+                  "vision":  null,
+                  "mission":  null,
+                  "intro":  "PCEA Nthambo Church is a Presbyterian congregation in Nthambo village, Magumoni, Tharaka-Nithi County, Kenya. We are part of the Presbyterian Church of East Africa (PCEA), in Magumoni Parish of the Chuka Presbytery.\n\nWe worship together every Sunday and welcome you to join us.",
+                  "history":  "PCEA Nthambo Church is part of Magumoni Parish in the Chuka Presbytery of the Presbyterian Church of East Africa. The PCEA grew across the Tharaka region through the twentieth century, as missionaries established schools and churches in the area.\n\nOur congregation has been active for many years, with elders serving here since at least 2005.\n\nMembers of our church have benefited from the Magumoni Parish scholarship partnership, which supports young people through secondary school and university. Our church choir also takes part in thanksgiving services and gatherings across the parish.\n\nEach year we join the wider PCEA family in marking Youth Sunday, Women\u0027s Guild Sunday and Brigade Sunday.",
+                  "images":  [
+                                 {
+                                     "src":  "/images/about/about.jpg",
+                                     "alt":  "PCEA Nthambo Church"
+                                 }
+                             ]
+              },
+    "contact":  {
+                    "phone":  null,
+                    "email":  null,
+                    "address":  "Nthambo, Magumoni, Tharaka-Nithi County, Kenya",
+                    "image":  null,
+                    "whatsapp":  "0728093770",
+                    "mapUrl":  "https://www.google.com/maps/search/?api=1\u0026query=Nthambo%2C%20Magumoni%2C%20Tharaka-Nithi%20County%2C%20Kenya"
+                },
+    "social":  {
+                   "facebook":  "https://www.facebook.com/nthamboPCEAchurch/",
+                   "youtube":  null,
+                   "instagram":  null
+               },
+    "live":  {
+                 "url":  null
+             },
+    "give":  {
+                 "label":  "Give",
+                 "url":  null,
+                 "message":  null,
+                 "instructions":  null
+             },
+    "activities":  [
+
+                   ],
+    "services":  [
+                     {
+                         "name":  "Sunday Worship",
+                         "day":  "Sunday",
+                         "time":  "10:00 AM",
+                         "notes":  "Live-streamed on our Facebook page.",
+                         "image":  null
+                     }
+                 ]
 }

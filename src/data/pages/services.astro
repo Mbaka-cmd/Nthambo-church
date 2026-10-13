@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import ServiceCards from '../components/ServiceCards.astro';
+import site from '../data/site.json';
+
+const activities = site.activities as any[];
+---
+<BaseLayout title="Services" description="Service times and weekly activities.">
+  <PageHeader title="Services and weekly activities" />
+  <section class="section">
+    <div class="container">
+      <h2>Service times</h2>
+      <ServiceCards />
+    </div>
+  </section>
+  <section class="section soft">
+    <div class="container">
+      <h2>Weekly activities</h2>
+      {activities.length > 0 ? (
+        <ul class="card-list">
+          {activities.map((a) => (
+            <li class="card">
+              <h3>{a.name}</h3>
+              <p class="meta">{[a.day, a.time].filter(Boolean).join(' · ')}</p>
+              {a.venue && <p>{a.venue}</p>}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="notice">Weekly activities will be announced soon.</p>
+      )}
+    </div>
+  </section>
+</BaseLayout>

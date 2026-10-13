@@ -1,0 +1,207 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Photo from '../components/Photo.astro';
+import ServiceCards from '../components/ServiceCards.astro';
+import YouTubeEmbed from '../components/YouTubeEmbed.astro';
+import MessageForm from '../components/MessageForm.astro';
+import ContactLinks from '../components/ContactLinks.astro';
+import site from '../data/site.json';
+import ministries from '../data/ministries.json';
+import leaders from '../data/leaders.json';
+import eventsData from '../data/events.json';
+import sermonsData from '../data/sermons.json';
+import { upcoming, newestFirst, formatDate, paragraphs, safeUrl, imgSrc, slugify, waHref, youtubeId } from '../lib/format.js';
+
+const t = site.theme as any;
+const about = site.about as any;
+const give = site.give as any;
+const introParas = paragraphs(about.intro);
+const aboutImages = about.images as any[];
+const hasAbout = introParas.length > 0 || Boolean(about.vision) || Boolean(about.mission);
+const heroImg = imgSrc((site.hero as any).image);
+const heroStyle = heroImg
+  ? `background-image: linear-gradient(rgba(12,35,80,.72), rgba(12,35,80,.72)), url('${heroImg}')`
+  : undefined;
+const poster = imgSrc(t.poster);
+const themeGallery = t.gallery as any[];
+const ministryItems = (ministries.items as any[]).slice(0, 3);
+const leaderItems = leaders.items as any[];
+const events = upcoming(eventsData.items as any[]).slice(0, 3);
+const sermons = newestFirst(sermonsData.items as any[]).slice(0, 3);
+const giveUrl = safeUrl(give.url);
+const live = safeUrl((site.live as any).url);
+const canMessage = Boolean(waHref(site.contact.whatsapp) || site.contact.email);
+---
+<BaseLayout>
+  <section class="hero" style={heroStyle}>
+    <div class="container">
+      {(t.year || site.denomination) && <p class="eyebrow">{t.year ? `Theme ${t.year}` : site.denomination}</p>}
+      <h1>{t.title ?? `Welcome to ${site.name}`}</h1>
+      <p class="lead">{site.tagline ?? 'Welcome. More information is being added to this website.'}</p>
+      <div class="link-row">
+        <a class="btn btn-gold" href="/services/">Service times</a>
+        {live && <a class="btn btn-gold" href={live} target="_blank" rel="noopener noreferrer">Watch live</a>}
+      </div>
+    </div>
+  </section>
+
+  {poster && (
+    <section class="section">
+      <div class="container"><img class="poster" src={poster} alt={t.title ?? 'Theme poster'} loading="lazy" /></div>
+    </section>
+  )}
+
+  {hasAbout && (
+    <section class="section">
+      <div class="container two-col">
+        <div class="about-photos">
+          <Photo src={aboutImages[0]?.src} alt={aboutImages[0]?.alt ?? ''} />
+          <Photo src={aboutImages[1]?.src} alt={aboutImages[1]?.alt ?? ''} />
+        </div>
+        <div>
+          <span class="kicker">About us</span>
+          <h2>{site.name}</h2>
+          {introParas.map((p) => <p>{p}</p>)}
+          {about.vision && <div class="card" style="margin-bottom:1rem"><h3>Vision</h3><p>{about.vision}</p></div>}
+          {about.mission && <div class="card" style="margin-bottom:1rem"><h3>Mission</h3><p>{about.mission}</p></div>}
+          <a class="btn btn-outline" href="/about/">Read more about us</a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  {t.verse && (
+    <section class="section band-coral">
+      <div class="container">
+        <blockquote class="quote" style="margin-block:0">
+          {t.verse}
+          {t.reference && <cite>{t.reference}</cite>}
+        </blockquote>
+      </div>
+    </section>
+  )}
+
+  {themeGallery.length > 0 && (
+    <section class="section soft">
+      <div class="container">
+        <div class="section-head"><span class="kicker">{site.name}</span><h2>{t.year ? `${t.year} theme` : 'Our theme'}</h2></div>
+        <ul class="gallery">
+          {themeGallery.map((g) => <li><Photo src={g.src} alt={g.alt ?? ''} /></li>)}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <section class="section band-blue">
+    <div class="container">
+      <div class="section-head"><span class="kicker">{site.name}</span><h2>Service times</h2></div>
+      <ServiceCards />
+    </div>
+  </section>
+
+  {(giveUrl || give.instructions) && (
+    <section class="section band-coral">
+      <div class="container">
+        <p class="quote">{give.message ?? 'Support the work of the church'}</p>
+        {give.instructions && <p style="text-align:center;white-space:pre-line">{give.instructions}</p>}
+        {giveUrl && <div class="link-row center"><a class="btn btn-gold" href={giveUrl} target="_blank" rel="noopener noreferrer">{give.label ?? 'Give'}</a></div>}
+      </div>
+    </section>
+  )}
+
+  {ministryItems.length > 0 && (
+    <section class="section soft">
+      <div class="container">
+        <div class="section-head"><span class="kicker">{site.name}</span><h2>Ministries</h2></div>
+        <ul class="card-list">
+          {ministryItems.map((m) => (
+            <li class="card">
+              <Photo src={m.image} alt={m.name} />
+              <h3>{m.name}</h3>
+              {m.description && <p>{m.description}</p>}
+              <a href={`/ministries/#${slugify(m.name)}`}>Read more</a>
+            </li>
+          ))}
+        </ul>
+        <div class="link-row center"><a class="btn btn-outline" href="/ministries/">All ministries</a></div>
+      </div>
+    </section>
+  )}
+
+  {leaderItems.length > 0 && (
+    <section class="section band-blue">
+      <div class="container">
+        <div class="section-head"><span class="kicker">{site.name}</span><h2>Church leaders</h2></div>
+        <ul class="card-list">
+          {leaderItems.map((p) => (
+            <li class="card leader">
+              <Photo src={p.image} alt={p.name} />
+              <h3>{p.name}</h3>
+              {p.title && <p class="meta">{p.title}</p>}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  {events.length > 0 && (
+    <section class="section">
+      <div class="container">
+        <div class="section-head"><span class="kicker">{site.name}</span><h2>Events</h2></div>
+        <ul class="card-list">
+          {events.map((e) => (
+            <li class="card">
+              <Photo src={e.image} alt={e.title} />
+              <h3>{e.title}</h3>
+              <p class="meta">{[formatDate(e.date), e.time].filter(Boolean).join(' · ')}</p>
+              {e.location && <p>{e.location}</p>}
+            </li>
+          ))}
+        </ul>
+        <div class="link-row center"><a class="btn btn-outline" href="/events/">All events</a></div>
+      </div>
+    </section>
+  )}
+
+  {sermons.length > 0 && (
+    <section class="section soft">
+      <div class="container">
+        <div class="section-head"><span class="kicker">{site.name}</span><h2>Our sermons</h2></div>
+        <ul class="card-list">
+          {sermons.map((s) => (
+            <li class="card">
+              {youtubeId(s.youtubeUrl) ? <YouTubeEmbed url={s.youtubeUrl} title={s.title} /> : <Photo src={s.image} alt={s.title} />}
+              <h3>{s.title}</h3>
+              <p class="meta">{[s.speaker, formatDate(s.date)].filter(Boolean).join(' · ')}</p>
+            </li>
+          ))}
+        </ul>
+        <div class="link-row center"><a class="btn btn-outline" href="/sermons/">All sermons</a></div>
+      </div>
+    </section>
+  )}
+
+  <section class="section">
+    <div class="container two-col">
+      <div>
+        <div class="section-head" style="text-align:left"><span class="kicker">Contact us</span><h2>Get in touch</h2></div>
+        <MessageForm kind="contact" />
+        {!canMessage && <ContactLinks />}
+      </div>
+      <div>
+        <Photo src={site.contact.image} alt="" />
+        {canMessage && <div style="margin-top:1.25rem"><ContactLinks /></div>}
+      </div>
+    </div>
+  </section>
+
+  {canMessage && (
+    <section class="section band-coral">
+      <div class="container">
+        <div class="section-head"><h2>Send us a prayer request</h2></div>
+        <div class="link-row center" style="margin-top:0"><a class="btn btn-gold" href="/contact/#prayer">Share a prayer request</a></div>
+      </div>
+    </section>
+  )}
+</BaseLayout>

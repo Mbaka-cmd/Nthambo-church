@@ -1,1 +1,19 @@
-{ "items": [] }
+{
+    "items":  [
+                  {
+                      "name":  "Rev. Justin M. Njagi",
+                      "title":  "Minister (July 2026 - Present)",
+                      "image":  null
+                  },
+                  {
+                      "name":  "Rev. Kirimi",
+                      "title":  "Minister (2021 - June 2026)",
+                      "image":  "/images/leaders/pst-kirimi.jpg"
+                  },
+                  {
+                      "name":  "Mwangi",
+                      "title":  "Chairman",
+                      "image":  "/images/leaders/church-chairman.jpg"
+                  }
+              ]
+}

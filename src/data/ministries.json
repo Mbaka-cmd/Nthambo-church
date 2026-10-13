@@ -1,1 +1,32 @@
-{ "items": [] }
+{
+    "items":  [
+                  {
+                      "name":  "Church Choir",
+                      "description":  "Leads us in worship through music and joins thanksgiving services and gatherings across the parish.",
+                      "leader":  null,
+                      "meets":  null,
+                      "image":  null
+                  },
+                  {
+                      "name":  "Youth and Brigade",
+                      "description":  "Our young people take part in Youth Sunday and Brigade Sunday, observed each year across the PCEA.",
+                      "leader":  null,
+                      "meets":  null,
+                      "image":  null
+                  },
+                  {
+                      "name":  "Women\u0027s Guild",
+                      "description":  "The Women\u0027s Guild fellowship, which marks Women\u0027s Guild Sunday each year.",
+                      "leader":  null,
+                      "meets":  null,
+                      "image":  null
+                  },
+                  {
+                      "name":  "Sunday School",
+                      "description":  "Our children learn and worship together on Sundays.",
+                      "leader":  null,
+                      "meets":  null,
+                      "image":  null
+                  }
+              ]
+}

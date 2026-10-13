@@ -1,0 +1,13 @@
+---
+import site from '../data/site.json';
+import { waHref } from '../lib/format.js';
+const base = waHref(site.contact?.whatsapp);
+const msg = 'Hello ' + site.name + ', I would like to enquire about...';
+const href = base ? base + (base.includes('?') ? '&' : '?') + 'text=' + encodeURIComponent(msg) : null;
+---
+{href && (
+  <a class="wa-float" href={href} target="_blank" rel="noopener noreferrer" aria-label="Chat with us on WhatsApp">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l4.9-1.3A10 10 0 1 0 12 2z"/></svg>
+    <span>Chat with us</span>
+  </a>
+)}

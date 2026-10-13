@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import ContactLinks from '../components/ContactLinks.astro';
+import MessageForm from '../components/MessageForm.astro';
+import site from '../data/site.json';
+import { socialLinks, waHref } from '../lib/format.js';
+
+const social = socialLinks(site.social);
+const canMessage = Boolean(waHref(site.contact.whatsapp) || site.contact.email);
+---
+<BaseLayout title="Contact" description={`Contact ${site.name}`}>
+  <PageHeader title="Contact and location" />
+  <section class="section">
+    <div class="container two-col">
+      <div>
+        <h2>Find us</h2>
+        <ContactLinks />
+        {social.length > 0 && (
+          <div>
+            <h2 style="margin-top:2rem">Follow us</h2>
+            <div class="link-row">
+              {social.map((s) => <a class="btn" href={s.href} target="_blank" rel="noopener noreferrer">{s.label}</a>)}
+            </div>
+          </div>
+        )}
+      </div>
+      {canMessage && (
+        <div>
+          <h2>Send a message</h2>
+          <MessageForm kind="contact" />
+        </div>
+      )}
+    </div>
+  </section>
+  {canMessage && (
+    <section class="section soft" id="prayer">
+      <div class="container prose">
+        <h2>Prayer request</h2>
+        <MessageForm kind="prayer" />
+      </div>
+    </section>
+  )}
+</BaseLayout>
