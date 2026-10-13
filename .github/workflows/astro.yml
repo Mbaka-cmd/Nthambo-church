@@ -1,4 +1,4 @@
-﻿name: Deploy Astro site to GitHub Pages
+name: Deploy Astro site to GitHub Pages
 
 on:
   push:
@@ -30,6 +30,9 @@ jobs:
 
       - name: Build Astro site
         run: npm run build
+
+      - name: Add GitHub Pages path to links and images
+        run: node scripts/add-base.mjs /Nthambo-church
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5

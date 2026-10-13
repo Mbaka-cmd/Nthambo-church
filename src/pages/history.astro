@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import site from '../data/site.json';
+
+const history = (site.about?.history ?? '').trim();
+const paragraphs = history ? history.split(/\n\s*\n/) : [];
+---
+<BaseLayout title="Our History" description={`The history of ${site.name}`}>
+  <PageHeader title="Our history" />
+  <section class="section">
+    <div class="container prose">
+      {paragraphs.length > 0 ? (
+        paragraphs.map((p) => <p>{p}</p>)
+      ) : (
+        <p class="notice">Our story will be published soon.</p>
+      )}
+    </div>
+  </section>
+</BaseLayout>
