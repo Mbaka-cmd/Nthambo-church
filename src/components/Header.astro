@@ -112,7 +112,12 @@ const give = safeUrl(s.give?.url);
     .nh-item:hover > .nh-sub, .nh-item:focus-within > .nh-sub { display: none; }
     .nh-item.open > .nh-sub { display: block; }
     .nh-give { margin: .8rem 0 0; display: inline-block; }
-    .nh-tag { display: none; }
+    .nh-tag { letter-spacing: .12em; font-size: .56rem; margin-top: .2rem; white-space: nowrap; }
+  }
+  @media (max-width: 380px) {
+    .nh-name { font-size: 1.05rem; }
+    .nh-tag { font-size: .5rem; letter-spacing: .08em; }
+    .nh-brand img { height: 46px; }
   }
 </style>
 

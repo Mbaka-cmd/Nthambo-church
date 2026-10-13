@@ -164,14 +164,13 @@ html, body, h1, h2, h3, h4, h5, h6, p, a, li, span, div, button, input, textarea
 .nh-name { font-family: 'Orpheum', var(--site-font) !important; }
 
 @media (max-width: 760px) {
-  /* Photos: small, centred, whole picture visible */
-  .photo:not(.ph):not([class*="hero"] *) { aspect-ratio: auto !important; height: auto !important; max-width: 300px; margin-left: auto; margin-right: auto; background: none !important; }
+  /* Photos: card-sized, whole picture visible, not tiny */
+  .photo:not(.ph):not([class*="hero"] *) { aspect-ratio: auto !important; height: auto !important; max-width: 340px; margin-left: auto; margin-right: auto; background: none !important; }
   .photo:not(.ph):not([class*="hero"] *) img,
-  img.photo:not(.ph):not([class*="hero"] *) { display: block; width: auto !important; height: auto !important; max-width: 100% !important; max-height: 200px !important; margin: 0 auto; object-fit: contain !important; border-radius: 10px; }
+  img.photo:not(.ph):not([class*="hero"] *) { display: block; width: auto !important; height: auto !important; max-width: 100% !important; max-height: 280px !important; margin: 0 auto; object-fit: contain !important; border-radius: 10px; }
 
-  /* About: photo on the left, text on the right (same as laptop) */
-  main *:has(> :first-child img[src*="images/about/"]):has(> :nth-child(2):last-child):not(:has(> .ph)),
-  main *:has(> img[src*="images/about/"]:first-child):has(> :nth-child(2):last-child):not(:has(> .ph)) {
-    display: grid !important; grid-template-columns: minmax(120px, 40%) 1fr !important; gap: 1rem !important; align-items: start !important;
-  }
+  /* About: photo left (half the width), text right, like the laptop */
+  main :is(:has(> :first-child img[src*="images/about/"]), :has(> img[src*="images/about/"]:first-child)):has(> :nth-child(2):last-child):not(:has(> .ph)) { display: grid !important; grid-template-columns: 50% minmax(0, 1fr) !important; gap: .9rem !important; align-items: start !important; }
+  main :is(:has(> :first-child img[src*="images/about/"]), :has(> img[src*="images/about/"]:first-child)):has(> :nth-child(2):last-child):not(:has(> .ph)) > :nth-child(2) p { font-size: .86rem !important; line-height: 1.5 !important; }
+  main :is(:has(> :first-child img[src*="images/about/"]), :has(> img[src*="images/about/"]:first-child)):has(> :nth-child(2):last-child):not(:has(> .ph)) > :nth-child(2) h2 { font-size: 1.15rem !important; }
 }

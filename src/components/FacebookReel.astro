@@ -1,8 +1,10 @@
 ---
 interface Props { url: string; title: string }
 const { url, title } = Astro.props;
-const src = `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}&show_text=false&width=267&height=476`;
+const W = 220;
+const H = 391;
+const src = 'https://www.facebook.com/plugins/video.php?href=' + encodeURIComponent(url) + '&show_text=false&width=' + W + '&height=' + H;
 ---
-<div class="fb-reel" style="display:flex;justify-content:center;max-width:100%;overflow:hidden">
-  <iframe src={src} title={title} width="267" height="476" style="border:none;overflow:hidden;max-width:100%" scrolling="no" frameborder="0" allowfullscreen="true" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+<div class="fb-reel" style="display:flex;justify-content:center;max-width:100%;margin-bottom:.75rem">
+  <iframe src={src} title={title} width={W} height={H} style="border:none;overflow:hidden;max-width:100%;border-radius:10px" scrolling="no" frameborder="0" allowfullscreen="true" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
 </div>
