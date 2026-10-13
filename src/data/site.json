@@ -2,7 +2,7 @@
   "name": "Nthambo Church",
   "denomination": null,
   "tagline": null,
-  "logo": null,
+  "logo": "/images/logo.png",
   "hero": { "image": null },
   "theme": { "year": null, "title": null, "verse": null, "reference": null, "poster": null, "gallery": [] },
   "about": { "intro": null, "history": null, "vision": null, "mission": null, "images": [] },
