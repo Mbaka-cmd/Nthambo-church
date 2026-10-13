@@ -163,11 +163,21 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 html, body, h1, h2, h3, h4, h5, h6, p, a, li, span, div, button, input, textarea, select, label, blockquote, small, strong, em { font-family: var(--site-font) !important; }
 .nh-name { font-family: 'Orpheum', var(--site-font) !important; }
 
+/* Current minister: dark blue card with gold border and badge */
+.leader-current { background: #0f2a5e !important; border: 2px solid #f4c15d !important; box-shadow: 0 8px 24px rgba(0,0,0,.28); }
+.leader-current, .leader-current * { color: #fff !important; }
+.leader-current p, .leader-current small { color: #dbe6ff !important; }
+.leader-badge { display: inline-block; align-self: flex-start; background: #f4c15d !important; padding: .28rem .7rem; border-radius: 999px; margin-bottom: .7rem; font-weight: 800; font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; }
+.leader-current .leader-badge { color: #14306a !important; }
+
 @media (max-width: 760px) {
-  /* Photos: card-sized, whole picture visible, not tiny */
-  .photo:not(.ph):not([class*="hero"] *) { aspect-ratio: auto !important; height: auto !important; max-width: 340px; margin-left: auto; margin-right: auto; background: none !important; }
-  .photo:not(.ph):not([class*="hero"] *) img,
-  img.photo:not(.ph):not([class*="hero"] *) { display: block; width: auto !important; height: auto !important; max-width: 100% !important; max-height: 280px !important; margin: 0 auto; object-fit: contain !important; border-radius: 10px; }
+  /* Change these two words to show the whole photo instead of filling the box: --photo-fit: contain */
+  :root { --photo-fit: cover; --photo-pos: center 55%; }
+
+  /* Every photo: same business-card shape, fills the card width */
+  .photo:not(.ph):not([class*="hero"] *) { position: relative; display: block; width: 100% !important; max-width: 340px !important; aspect-ratio: 7 / 4 !important; height: auto !important; margin: 0 auto .75rem !important; overflow: hidden; border-radius: 10px; background: #e9eef7 !important; }
+  .photo:not(.ph):not([class*="hero"] *) img { position: absolute !important; inset: 0 !important; width: 100% !important; height: 100% !important; max-width: none !important; max-height: none !important; margin: 0 !important; border-radius: 0 !important; object-fit: var(--photo-fit) !important; object-position: var(--photo-pos) !important; }
+  img.photo:not(.ph):not([class*="hero"] *) { display: block; width: 100% !important; max-width: 340px !important; aspect-ratio: 7 / 4 !important; height: auto !important; margin: 0 auto .75rem !important; border-radius: 10px; object-fit: var(--photo-fit) !important; object-position: var(--photo-pos) !important; }
 
   /* About: photo left (half the width), text right, like the laptop */
   main :is(:has(> :first-child img[src*="images/about/"]), :has(> img[src*="images/about/"]:first-child)):has(> :nth-child(2):last-child):not(:has(> .ph)) { display: grid !important; grid-template-columns: 50% minmax(0, 1fr) !important; gap: .9rem !important; align-items: start !important; }

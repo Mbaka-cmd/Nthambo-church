@@ -1,0 +1,17 @@
+<script>
+  const reCurrent = /\bPresent\)?$/i;
+  const cands = Array.from(document.querySelectorAll('main .card, main article, main li'));
+  const inner = cands.filter((c) => !cands.some((o) => o !== c && c.contains(o)));
+  inner.forEach((card) => {
+    if (card.classList.contains('leader-current')) return;
+    const leaf = Array.from(card.querySelectorAll('p, span, small, div')).find(
+      (el) => el.children.length === 0 && reCurrent.test((el.textContent || '').trim())
+    );
+    if (!leaf) return;
+    card.classList.add('leader-current');
+    const badge = document.createElement('span');
+    badge.className = 'leader-badge';
+    badge.textContent = 'Current minister';
+    card.prepend(badge);
+  });
+</script>
