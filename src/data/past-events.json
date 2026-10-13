@@ -1,0 +1,13 @@
+{
+    "items":  [
+                  {
+                      "title":  "Team Building",
+                      "location":  "Camp Dunda Falls",
+                      "image":  "/images/events/teambuilding.jpg"
+                  },
+                  {
+                      "title":  "Youths Old School Service",
+                      "image":  "/images/events/youths-old-school-service.jpg"
+                  }
+              ]
+}

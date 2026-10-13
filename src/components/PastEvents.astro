@@ -1,0 +1,28 @@
+---
+import Photo from './Photo.astro';
+import data from '../data/past-events.json';
+import { formatDate } from '../lib/format.js';
+
+const items = (((data as any).items ?? []) as any[]).map((e) => ({
+  ...e,
+  meta: [e.date ? formatDate(e.date) : null, e.time].filter(Boolean).join(' · '),
+}));
+---
+{items.length > 0 && (
+  <section class="section soft">
+    <div class="container">
+      <h2>Past events</h2>
+      <ul class="card-list">
+        {items.map((e) => (
+          <li class="card">
+            {e.image && <Photo src={e.image} alt={e.title} />}
+            <h3>{e.title}</h3>
+            {e.meta && <p class="meta">{e.meta}</p>}
+            {e.location && <p><strong>Where:</strong> {e.location}</p>}
+            {e.description && <p>{e.description}</p>}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+)}
